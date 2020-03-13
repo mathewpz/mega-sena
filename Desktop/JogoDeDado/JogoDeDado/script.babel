@@ -1,0 +1,88 @@
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			dado1: null,
+			dado2: null,
+			resultado: null,
+			palpite: null,
+			historico: Array
+		}
+	}
+	getRandomInt = (min, max) => {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+
+	handleDados = () => {
+		let dado1 = this.getRandomInt(1, 6)
+		let dado2 = this.getRandomInt(1, 6)
+		let resultado = dado1 + dado2
+		this.setState({
+			dado1,
+			dado2,
+			resultado: resultado
+		})
+		if (resultado == this.state.palpite) {
+			alert('acertou')
+			let acertos = {
+				dado1: dado1,
+				dado2: dado2,
+				palpite: this.state.palpite,
+				resultado: resultado,
+				acertou: acc++,
+				errou: err
+			}
+			historico.push(acertos)
+			this.setState({
+				historico: historico
+			}, console.log(this.state.historico))
+
+		} else {
+			alert('você errou')
+
+			let erros = {
+				dado1: dado1,
+				dado2: dado2,
+				palpite: this.state.palpite,
+				resultado: resultado,
+				errou: err++,
+				acertou: acc
+			}
+			historico.push(erros)
+			this.setState({
+				historico: historico
+			}, console.log(this.state.historico))
+		}
+	}
+	handleInput = (event) => {
+		this.setState({
+			palpite: event.target.value
+		})
+	}
+
+	render() {
+		return (
+			<>
+				<div>
+					<p>VALOR DO PRIMEIRO DADO: {this.state.dado1}</p>
+					<p>VALOR DO SEGUNDO DADO: {this.state.dado2}</p>
+					<p>RESULTADO: {this.state.resultado} </p>
+				</div>
+				<div>
+					PALPITE: <input type="Number" maxLength="2" onChange={this.handleInput} />
+					<br />
+					<button style={{ margin: '10px 0' }} onClick={() => this.handleDados()}>LANCAR DADOS</button>
+				</div>
+			</>
+		)
+	}
+}
+
+
+ReactDOM.render (
+ <App />,
+ document.getElementById("root")
+);
